@@ -70,56 +70,55 @@ class HomeState extends State<Home> {
     TextStyle textStyle = Theme.of(context).textTheme.headline5;
     return ListView.builder(
       itemCount: count,
-      itemBuilder: (BuildContext context, int index) {
+      itemBuilder: (
+        BuildContext context, int index) {
         return Card(
           color: Colors.white,
           elevation: 2.0,
-          child: Column (
-            children: [
-              Container(
-                 child: ListTile(
+          child: ListTile(
             leading: CircleAvatar(
               backgroundColor: Colors.red,
               child: Icon(Icons.ad_units),
             ),
-          title: Text(this.itemList[index].name, style: textStyle,),
-          subtitle: Text(this.itemList[index].price.toString()),
-          trailing: GestureDetector(
-            child: Icon(Icons.delete),
-            onTap: ()async {
-              //TODO 3 Panggil Fungsi untuk Delete dari DB berdasarkan Item
+            title: 
+              Text(this.itemList[index].kode + " ==> "+ this.itemList[index].name, style: textStyle),
+            subtitle: 
+                Text(
+                  "Harga : Rp."+this.itemList[index].price.toString() + 
+                  "\nStok : "+this.itemList[index].stok.toString()
+                ),
+               
+              
+            
+            trailing: GestureDetector(
+            child: 
+              Icon(Icons.delete),
+            onTap: ()
+              async {
+            //TODO 3 Panggil Fungsi untuk Delete dari DB berdasarkan Item
               dbHelper.delete(this.itemList[index].id);
               updateListView();
+            
             },
-          ),
-          onTap: () async {
+            ),
+            onTap: ()   
+              async {
             var item = await navigateToEntryForm(context, this.itemList[index]);
             //TODO 4 Panggil Fungsi untuk Edit data
-            if (item != null) {
-            dbHelper.update(item);
-            updateListView();
-            }
-          },
+              if (item != null) {
+                dbHelper.update(item);
+                updateListView();
+              }
+              },
+            
+          
           ),
-        ),
-        Container(
-          padding: EdgeInsets.only(bottom: 20),
-          margin: EdgeInsets.only(left: 12),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text("Stok Barang : "+this.itemList[index].stok.toString(),
-                style: TextStyle(fontSize: 15)),
-              Text("Kode Barang : "+this.itemList[index].kode),
-            ]
-          ),
-        )
-              ],
-              )
         );
       },
-    );
+      );
     }
+
+  
  
   //update List item
   void updateListView() {
